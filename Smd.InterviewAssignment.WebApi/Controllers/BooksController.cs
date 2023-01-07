@@ -2,6 +2,8 @@
 using System.Net.Mail;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Smd.InterviewAssignment.WebApi.Data;
+using Smd.InterviewAssignment.WebApi.Models;
 
 namespace Smd.InterviewAssignment.WebApi.Controllers
 {
@@ -10,22 +12,18 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
     public class BooksController : ControllerBase
     {
         private readonly ILogger<BooksController> _logger;
+        private readonly IBookRepo _bookRepo;
 
-        public BooksController(ILogger<BooksController> logger)
+        public BooksController(ILogger<BooksController> logger, IBookRepo bookRepo)
         {
             _logger = logger;
+            _bookRepo = bookRepo;
         }
 
         [HttpGet]
-        public IEnumerable<dynamic> Get()
+        public IEnumerable<Book> Get()
         {
-            return new dynamic[4]
-            {
-                new {id = 1, title = "Moby Dick", author = "Herman Melville"},
-                new {id = 2, title = "Ulysses", author = "James Joyce"},
-                new {id = 3, tilte = "The Great Gatsby", author = "Fitz"},
-                new {id = 4, title = "War and Peace", author = "Leo Tolstoy"}
-            };
+            return _bookRepo.GetAllBooks();
         }
 
         [HttpGet]
@@ -34,7 +32,7 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
         {
             foreach (var book in Get())
             {
-                if (book.id == id)
+                if (book.Id == id)
                 {
                     return book;
                 }
