@@ -77,6 +77,22 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
             return CreatedAtRoute(nameof(GetBookByID), new { book.Id }, book);
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult<int> DeleteBook(int id)
+        { 
+            _logger.LogInformation("--> Hit DeleteBook - id: {id}", id);
+
+            if (!_bookRepo.BookExists(id))
+                return BadRequest("Book with provided ID doesn't exist!");
+
+            _bookRepo.DeleteBook(id);
+
+            _logger.LogInformation("----> Book deleted");
+
+            return Ok(new { Id = id });
+        }
+
         [HttpGet]
         [Route("mail")]
         public void Mail(string recipient)

@@ -64,7 +64,7 @@ namespace Smd.InterviewAssignment.WebApi.Data
 
         public void DeleteBook(int id)
         {
-            throw new System.NotImplementedException();
+            _books.RemoveAll(b => b.Id == id);
         }
 
         public void MarkBookAsRead(int id)

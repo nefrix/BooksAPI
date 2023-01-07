@@ -83,5 +83,16 @@ namespace Smd.InterviewAssignment.nUnit.Tests
 
             Assert.That(result.Result, Is.TypeOf(typeof(CreatedAtRouteResult)));
         }
+
+        [Test]
+        [TestCase(1)]
+        public void DeleteBook_ShouldReturnOkResult(int id)
+        {
+            BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
+  
+            var result = sut.DeleteBook(id);
+
+            Assert.That(result.Result, Is.TypeOf(typeof(OkResult)));
+        }
     }
 }
