@@ -31,7 +31,7 @@ namespace Smd.InterviewAssignment.WebApi.Data
 
         public Book GetBookByTitle(string title)
         {
-            throw new System.NotImplementedException();
+            return _books.FirstOrDefault(b => b.Title == title);
         }
 
         public IEnumerable<Book> GetBooksByAuthor(string author)

@@ -41,6 +41,18 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
+        public ActionResult<Book> GetBookByTitle(string title)
+        {
+            Book book = _bookRepo.GetBookByTitle(title);
+
+            if (book == null)
+                return NotFound();
+
+            return Ok(book);
+        }
+
+        [HttpGet]
         [Route("mail")]
         public void Mail(string recipient)
         {
