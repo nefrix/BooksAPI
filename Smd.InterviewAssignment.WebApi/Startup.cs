@@ -20,7 +20,7 @@ namespace Smd.InterviewAssignment.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<IBookRepo, BookInMemRepo>();
+            services.AddSingleton<IBookRepo, BookInMemRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

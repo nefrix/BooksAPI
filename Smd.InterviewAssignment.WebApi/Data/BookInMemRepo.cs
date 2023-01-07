@@ -1,4 +1,5 @@
 ﻿using Smd.InterviewAssignment.WebApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,9 +30,18 @@ namespace Smd.InterviewAssignment.WebApi.Data
             return _books.FirstOrDefault(b => b.Id == id);
         }
 
+        public bool BookExists(string author, string title)
+        {
+            return _books.Any(b => string.Equals(b.Title, title, System.StringComparison.OrdinalIgnoreCase) && string.Equals(b.Author, author, System.StringComparison.OrdinalIgnoreCase));
+        }
+
         public void AddBook(Book book)
         {
-            throw new System.NotImplementedException();
+            if (book == null)
+                throw new ArgumentNullException(nameof(book));
+
+            book.Id = GetNewId();
+            _books.Add(book);
         }
 
         public void DeleteBook(int id)
@@ -47,6 +57,11 @@ namespace Smd.InterviewAssignment.WebApi.Data
         public void UpdateBook(Book book)
         {
             throw new System.NotImplementedException();
+        }
+
+        private int GetNewId()
+        {
+            return _books.Max(b => b.Id) + 1;
         }
     }
 }

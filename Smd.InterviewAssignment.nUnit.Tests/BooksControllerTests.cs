@@ -22,6 +22,7 @@ namespace Smd.InterviewAssignment.nUnit.Tests
             BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
 
             var result = sut.GetBooks();
+
             Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
         }
 
@@ -42,6 +43,7 @@ namespace Smd.InterviewAssignment.nUnit.Tests
             BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
 
             var result = sut.GetBookByID(id);
+
             Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
         }
 
@@ -57,5 +59,18 @@ namespace Smd.InterviewAssignment.nUnit.Tests
             Assert.That(book, Is.TypeOf(typeof(Book)));
             Assert.That((book as Book).Id, Is.EqualTo(id));
         }
+
+        [Test]
+        public void CreateBook_ShouldReturnCreatedResult()
+        {
+            BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
+
+            Book book = new Book() { Author = "George R.R. Martin", Title = "Game of Thrones" };
+
+            var result = sut.CreateBook(book);
+
+            Assert.That(result.Result, Is.TypeOf(typeof(CreatedAtRouteResult)));
+        }
+
     }
 }

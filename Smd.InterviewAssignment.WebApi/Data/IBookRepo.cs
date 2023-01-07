@@ -8,6 +8,7 @@ namespace Smd.InterviewAssignment.WebApi.Data
     {
         IEnumerable<Book> GetAllBooks();
         Book GetBookById(int id);
+        bool BookExists(string author, string title);
         void AddBook(Book book);
         void UpdateBook(Book book);
         void DeleteBook(int id);

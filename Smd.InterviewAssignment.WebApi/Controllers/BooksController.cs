@@ -32,12 +32,29 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
         [Route("{id}", Name = "GetBookByID")]
         public ActionResult<Book> GetBookByID(int id)
         {
+            _logger.LogInformation("--> Hit GetBookByID: {id}", id);
+
             Book book = _bookRepo.GetBookById(id);
 
             if (book == null)
                 return NotFound();
 
             return Ok(book);
+        }
+
+        [HttpPost]
+        public ActionResult<Book> CreateBook(Book book)
+        {
+            _logger.LogInformation("--> Hit CreateBook - title: {title}, author: {author}", book.Title, book.Author);
+
+            if (_bookRepo.BookExists(book.Author, book.Title))
+                return BadRequest("Book with provided author and title already exists!");
+
+            _bookRepo.AddBook(book);
+
+            _logger.LogInformation("----> Book created with id: {id}", book.Id);
+
+            return CreatedAtRoute(nameof(GetBookByID), new { book.Id }, book);
         }
 
         [HttpGet]
