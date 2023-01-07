@@ -11,8 +11,8 @@ namespace Smd.InterviewAssignment.WebApi.Data
         bool BookExists(int id);
         bool BookExists(string author, string title);
         void AddBook(Book book);
-        void UpdateBook(Book book);
+        Book UpdateBook(Book book);
         void DeleteBook(int id);
-        void MarkBookAsRead(int id);
+        Book MarkBookAsRead(int id);
     }
 }

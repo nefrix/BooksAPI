@@ -70,11 +70,11 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
             if (!_bookRepo.BookExists(book.Id))
                 return BadRequest("Book with provided ID doesn't exist!");
 
-            _bookRepo.UpdateBook(book);
+            Book bookToUpdate = _bookRepo.UpdateBook(book);
 
             _logger.LogInformation("----> Book updated");
 
-            return CreatedAtRoute(nameof(GetBookByID), new { book.Id }, book);
+            return Ok(bookToUpdate);
         }
 
         [HttpDelete]
@@ -91,6 +91,22 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
             _logger.LogInformation("----> Book deleted");
 
             return Ok(new { Id = id });
+        }
+
+        [HttpPatch]
+        [Route("{id}")]
+        public ActionResult<int> MarkBookAsRead(int id)
+        {
+            _logger.LogInformation("--> Hit MarkBookAsRead - id: {id}", id);
+
+            if (!_bookRepo.BookExists(id))
+                return BadRequest("Book with provided ID doesn't exist!");
+
+            Book bookToMark = _bookRepo.MarkBookAsRead(id);
+
+            _logger.LogInformation("----> Book marked as read");
+
+            return Ok(bookToMark);
         }
 
         [HttpGet]

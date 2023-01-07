@@ -10,5 +10,6 @@ namespace Smd.InterviewAssignment.WebApi.Models
         public string Title { get; set; }
         [Required]
         public string Author { get; set; }
+        public bool IsRead { get; set; }
     }
 }

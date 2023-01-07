@@ -49,17 +49,19 @@ namespace Smd.InterviewAssignment.WebApi.Data
             _books.Add(book);
         }
 
-        public void UpdateBook(Book book)
+        public Book UpdateBook(Book book)
         {
             if (book == null)
                 throw new ArgumentNullException(nameof(book));
 
             Book bookToUpdate = _books.FirstOrDefault(b => b.Id == book.Id);
-            if (bookToUpdate == null)
-                return;
+            if (bookToUpdate != null)
+            {
+                bookToUpdate.Author = book.Author;
+                bookToUpdate.Title = book.Title;
+            }
 
-            bookToUpdate.Author = book.Author; 
-            bookToUpdate.Title = book.Title;
+            return bookToUpdate;
         }
 
         public void DeleteBook(int id)
@@ -67,9 +69,13 @@ namespace Smd.InterviewAssignment.WebApi.Data
             _books.RemoveAll(b => b.Id == id);
         }
 
-        public void MarkBookAsRead(int id)
+        public Book MarkBookAsRead(int id)
         {
-            throw new System.NotImplementedException();
+            Book bookToMark = _books.FirstOrDefault(b => b.Id == id);
+            if (bookToMark != null)
+                bookToMark.IsRead = true;
+
+            return bookToMark;
         }
 
         private int GetNewId()

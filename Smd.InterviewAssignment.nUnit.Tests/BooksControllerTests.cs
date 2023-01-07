@@ -73,7 +73,7 @@ namespace Smd.InterviewAssignment.nUnit.Tests
         }
 
         [Test]
-        public void UpdateBook_ShouldReturnCreatedResult()
+        public void UpdateBook_ShouldReturnOkResult()
         {
             BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
 
@@ -81,7 +81,7 @@ namespace Smd.InterviewAssignment.nUnit.Tests
 
             var result = sut.UpdateBook(book);
 
-            Assert.That(result.Result, Is.TypeOf(typeof(CreatedAtRouteResult)));
+            Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
         }
 
         [Test]
@@ -92,7 +92,18 @@ namespace Smd.InterviewAssignment.nUnit.Tests
   
             var result = sut.DeleteBook(id);
 
-            Assert.That(result.Result, Is.TypeOf(typeof(OkResult)));
+            Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
+        }
+
+        [Test]
+        [TestCase(1)]
+        public void MarkBookAsRead_ShouldReturnOkResult(int id)
+        {
+            BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
+
+            var result = sut.MarkBookAsRead(id);
+
+            Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
         }
     }
 }
