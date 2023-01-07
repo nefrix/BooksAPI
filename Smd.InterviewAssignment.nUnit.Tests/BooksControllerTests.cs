@@ -57,15 +57,5 @@ namespace Smd.InterviewAssignment.nUnit.Tests
             Assert.That(book, Is.TypeOf(typeof(Book)));
             Assert.That((book as Book).Id, Is.EqualTo(id));
         }
-
-        [Test]
-        [TestCase("Ulysses")]
-        public void GetBookByTitle_ShouldReturnOkResult(string title)
-        {
-            BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
-
-            var result = sut.GetBookByTitle(title);
-            Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
-        }
     }
 }

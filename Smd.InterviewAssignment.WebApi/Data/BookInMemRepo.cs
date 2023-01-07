@@ -29,16 +29,6 @@ namespace Smd.InterviewAssignment.WebApi.Data
             return _books.FirstOrDefault(b => b.Id == id);
         }
 
-        public Book GetBookByTitle(string title)
-        {
-            return _books.FirstOrDefault(b => b.Title == title);
-        }
-
-        public IEnumerable<Book> GetBooksByAuthor(string author)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void AddBook(Book book)
         {
             throw new System.NotImplementedException();
