@@ -21,22 +21,24 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Book> Get()
+        public ActionResult<IEnumerable<Book>> GetBooks()
         {
-            return _bookRepo.GetAllBooks();
+            _logger.LogInformation("--> Hit GetBooks");
+
+            return Ok(_bookRepo.GetAllBooks());
         }
 
         [HttpGet]
         [Route("{id}")]
         public object Get(int id)
         {
-            foreach (var book in Get())
-            {
-                if (book.Id == id)
-                {
-                    return book;
-                }
-            }
+            //foreach (var book in Get())
+            //{
+            //    if (book.Id == id)
+            //    {
+            //        return book;
+            //    }
+            //}
         
 
             return null;
