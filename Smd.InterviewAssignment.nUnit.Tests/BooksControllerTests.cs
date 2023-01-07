@@ -72,5 +72,16 @@ namespace Smd.InterviewAssignment.nUnit.Tests
             Assert.That(result.Result, Is.TypeOf(typeof(CreatedAtRouteResult)));
         }
 
+        [Test]
+        public void UpdateBook_ShouldReturnCreatedResult()
+        {
+            BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
+
+            Book book = new Book() { Id = 3, Author = "Francis Scott Fitzgerald", Title = "The Great Gatsby" };
+
+            var result = sut.UpdateBook(book);
+
+            Assert.That(result.Result, Is.TypeOf(typeof(CreatedAtRouteResult)));
+        }
     }
 }

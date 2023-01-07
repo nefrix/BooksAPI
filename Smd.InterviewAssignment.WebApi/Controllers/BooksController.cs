@@ -45,6 +45,8 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
         [HttpPost]
         public ActionResult<Book> CreateBook(Book book)
         {
+            // the method takes in whole Book object - in production I'd create BookCreateDTO without Id field
+
             _logger.LogInformation("--> Hit CreateBook - title: {title}, author: {author}", book.Title, book.Author);
 
             if (_bookRepo.BookExists(book.Author, book.Title))
@@ -53,6 +55,24 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
             _bookRepo.AddBook(book);
 
             _logger.LogInformation("----> Book created with id: {id}", book.Id);
+
+            return CreatedAtRoute(nameof(GetBookByID), new { book.Id }, book);
+        }
+
+        [HttpPut]
+        public ActionResult<Book> UpdateBook(Book book)
+        {
+            // in this case only full update is possible - requiring all required fields (author, title)
+            // in production I'd create a class BookUpdateDTO which wouldn't require all the fields
+
+            _logger.LogInformation("--> Hit UpdateBook - id: {id}, title: {title}, author: {author}", book.Id, book.Title, book.Author);
+
+            if (!_bookRepo.BookExists(book.Id))
+                return BadRequest("Book with provided ID doesn't exist!");
+
+            _bookRepo.UpdateBook(book);
+
+            _logger.LogInformation("----> Book updated");
 
             return CreatedAtRoute(nameof(GetBookByID), new { book.Id }, book);
         }

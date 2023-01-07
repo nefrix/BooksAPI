@@ -30,6 +30,11 @@ namespace Smd.InterviewAssignment.WebApi.Data
             return _books.FirstOrDefault(b => b.Id == id);
         }
 
+        public bool BookExists(int id)
+        {
+            return _books.Any(b => b.Id == id);
+        }
+
         public bool BookExists(string author, string title)
         {
             return _books.Any(b => string.Equals(b.Title, title, System.StringComparison.OrdinalIgnoreCase) && string.Equals(b.Author, author, System.StringComparison.OrdinalIgnoreCase));
@@ -44,17 +49,25 @@ namespace Smd.InterviewAssignment.WebApi.Data
             _books.Add(book);
         }
 
+        public void UpdateBook(Book book)
+        {
+            if (book == null)
+                throw new ArgumentNullException(nameof(book));
+
+            Book bookToUpdate = _books.FirstOrDefault(b => b.Id == book.Id);
+            if (bookToUpdate == null)
+                return;
+
+            bookToUpdate.Author = book.Author; 
+            bookToUpdate.Title = book.Title;
+        }
+
         public void DeleteBook(int id)
         {
             throw new System.NotImplementedException();
         }
 
         public void MarkBookAsRead(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void UpdateBook(Book book)
         {
             throw new System.NotImplementedException();
         }
