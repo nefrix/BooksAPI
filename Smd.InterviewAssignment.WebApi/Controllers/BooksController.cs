@@ -29,19 +29,15 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public object Get(int id)
+        [Route("{id}", Name = "GetBookByID")]
+        public ActionResult<Book> GetBookByID(int id)
         {
-            //foreach (var book in Get())
-            //{
-            //    if (book.Id == id)
-            //    {
-            //        return book;
-            //    }
-            //}
-        
+            Book book = _bookRepo.GetBookById(id);
 
-            return null;
+            if (book == null)
+                return NotFound();
+
+            return Ok(book);
         }
 
         [HttpGet]

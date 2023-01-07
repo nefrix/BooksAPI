@@ -22,9 +22,6 @@ namespace Smd.InterviewAssignment.nUnit.Tests
 
             var result = sut.GetBooks();
             Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
-
-            var okResult = result.Result as OkObjectResult;
-            Assert.AreEqual(okResult.StatusCode, HttpStatusCode.OK);
         }
 
         [Test]
@@ -35,6 +32,16 @@ namespace Smd.InterviewAssignment.nUnit.Tests
             var result = sut.GetBooks().Result as OkObjectResult;
 
             Assert.That(result.Value, Is.Not.Empty);
+        }
+
+        [Test]
+        [TestCase(1)]
+        public void GetBookById_ShouldReturnOkResult(int id)
+        {
+            BooksController sut = new BooksController(new NullLogger<BooksController>(), new BookInMemRepo());
+
+            var result = sut.GetBookByID(id);
+            Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
         }
     }
 }

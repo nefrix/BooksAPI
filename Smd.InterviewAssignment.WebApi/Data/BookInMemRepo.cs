@@ -1,5 +1,6 @@
 ﻿using Smd.InterviewAssignment.WebApi.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Smd.InterviewAssignment.WebApi.Data
 {
@@ -25,7 +26,7 @@ namespace Smd.InterviewAssignment.WebApi.Data
 
         public Book GetBookById(int id)
         {
-            throw new System.NotImplementedException();
+            return _books.FirstOrDefault(b => b.Id == id);
         }
 
         public Book GetBookByTitle(string title)
