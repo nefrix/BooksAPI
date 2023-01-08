@@ -8,6 +8,7 @@ using Smd.InterviewAssignment.WebApi.Data;
 using Smd.InterviewAssignment.WebApi.Models;
 using Smd.InterviewAssignment.WebApi.Services;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Smd.InterviewAssignment.nUnit.Tests
 {
@@ -115,11 +116,11 @@ namespace Smd.InterviewAssignment.nUnit.Tests
         }
 
         [Test]
-        public void Mail_ShouldReturnOkResult()
+        public async Task Mail_ShouldReturnOkResult()
         {
             BooksController sut = new BooksController(_logger, new BookInMemRepo(), _emailService);
 
-            var result = sut.Mail("test@test.com");
+            var result = await sut.Mail("test@test.com");
 
             Assert.That(result, Is.TypeOf(typeof(OkObjectResult)));
         }
