@@ -82,6 +82,18 @@ namespace Smd.InterviewAssignment.nUnit.Tests
         }
 
         [Test]
+        public void CreateBook_CalledWithExistingBook_ShouldReturnBadRequest()
+        {
+            BooksController sut = new BooksController(_logger, new BookInMemRepo(), _emailService);
+
+            Book book = new Book() { Author = "Herman Melville", Title = "Moby Dick" };
+
+            var result = sut.CreateBook(book);
+
+            Assert.That(result.Result, Is.TypeOf(typeof(BadRequestObjectResult)));
+        }
+
+        [Test]
         public void UpdateBook_ShouldReturnOkResult()
         {
             BooksController sut = new BooksController(_logger, new BookInMemRepo(), _emailService);
@@ -102,6 +114,17 @@ namespace Smd.InterviewAssignment.nUnit.Tests
             var result = sut.DeleteBook(id);
 
             Assert.That(result.Result, Is.TypeOf(typeof(OkObjectResult)));
+        }
+
+        [Test]
+        [TestCase(-1)]
+        public void DeleteBook_CalledWithWrongId_ShouldReturnBadRequest(int id)
+        {
+            BooksController sut = new BooksController(_logger, new BookInMemRepo(), _emailService);
+
+            var result = sut.DeleteBook(id);
+
+            Assert.That(result.Result, Is.TypeOf(typeof(BadRequestObjectResult)));
         }
 
         [Test]
