@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Smd.InterviewAssignment.WebApi.Data;
 using Smd.InterviewAssignment.WebApi.Models;
+using Smd.InterviewAssignment.WebApi.Services;
 
 namespace Smd.InterviewAssignment.WebApi.Controllers
 {
@@ -13,11 +19,13 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
     {
         private readonly ILogger<BooksController> _logger;
         private readonly IBookRepo _bookRepo;
+        private readonly IEmailService _emailService;
 
-        public BooksController(ILogger<BooksController> logger, IBookRepo bookRepo)
+        public BooksController(ILogger<BooksController> logger, IBookRepo bookRepo, IEmailService emailService)
         {
             _logger = logger;
             _bookRepo = bookRepo;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -37,7 +45,7 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
             Book book = _bookRepo.GetBookById(id);
 
             if (book == null)
-                return NotFound();
+                return NotFound($"Book with id {id} doesn't exist!");
 
             return Ok(book);
         }
@@ -109,13 +117,46 @@ namespace Smd.InterviewAssignment.WebApi.Controllers
             return Ok(bookToMark);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("mail")]
-        public void Mail(string recipient)
+        public async Task<ActionResult> Mail([FromBody]string recipient)
         {
-            var emailClient = new SmtpClient("host");
-            emailClient.Send("noreply@dba.dk", recipient, "New books today",
-                "Here is a list of new books: TODO");
+            // sending email requires providing specs in appsettings.json
+
+            _logger.LogInformation("--> Hit Mail - recipient: {recipient}", recipient);
+
+            if (string.IsNullOrEmpty(recipient))
+                return BadRequest("Recipient address not provided!");
+
+            List<Book> unreadBooks = _bookRepo.GetAllBooks().Where(b => b.IsRead == false).ToList();
+            if (unreadBooks.Count == 0)
+                return Ok("No unread books to be sent to recipient");
+
+            StringBuilder emailBody = new StringBuilder();
+            emailBody.AppendLine("Here is a list of new books:");
+            emailBody.AppendLine(string.Join(Environment.NewLine, unreadBooks));
+
+            EmailDto email = new EmailDto()
+            {
+                Sender = "noreply@dba.dk",
+                Recipient = recipient,
+                Subject = "New books today",
+                Body = emailBody.ToString()
+            };
+
+            try
+            {
+                await _emailService.SendEmail(email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "--> Error occured on sending email");
+                return BadRequest("Error occured on sending email: " + ex.Message);
+            }
+
+            _logger.LogInformation("----> Email sent");
+
+            return Ok("Sent email to: " + recipient);
         }
     }
 }

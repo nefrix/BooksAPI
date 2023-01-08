@@ -37,7 +37,7 @@ namespace Smd.InterviewAssignment.WebApi.Data
 
         public bool BookExists(string author, string title)
         {
-            return _books.Any(b => string.Equals(b.Title, title, System.StringComparison.OrdinalIgnoreCase) && string.Equals(b.Author, author, System.StringComparison.OrdinalIgnoreCase));
+            return _books.Any(b => string.Equals(b.Title, title, StringComparison.OrdinalIgnoreCase) && string.Equals(b.Author, author, StringComparison.OrdinalIgnoreCase));
         }
 
         public void AddBook(Book book)
@@ -59,6 +59,7 @@ namespace Smd.InterviewAssignment.WebApi.Data
             {
                 bookToUpdate.Author = book.Author;
                 bookToUpdate.Title = book.Title;
+                bookToUpdate.IsRead = book.IsRead;
             }
 
             return bookToUpdate;

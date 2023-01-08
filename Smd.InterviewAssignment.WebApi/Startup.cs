@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Smd.InterviewAssignment.WebApi.Data;
+using Smd.InterviewAssignment.WebApi.Services;
 
 namespace Smd.InterviewAssignment.WebApi
 {
@@ -21,6 +22,7 @@ namespace Smd.InterviewAssignment.WebApi
         {
             services.AddControllers();
             services.AddSingleton<IBookRepo, BookInMemRepo>();
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

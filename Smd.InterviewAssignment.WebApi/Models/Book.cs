@@ -11,5 +11,10 @@ namespace Smd.InterviewAssignment.WebApi.Models
         [Required]
         public string Author { get; set; }
         public bool IsRead { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Author} - {Title}";
+        }
     }
 }
